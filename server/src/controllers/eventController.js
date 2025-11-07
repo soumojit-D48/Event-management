@@ -1068,6 +1068,59 @@ const addCoordinators = async (req, res) => {
 };
 
 
+// export const addCoordinatorByEmail = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+//     const event = req.event; // attached from checkEventOwnership middleware
+
+//     if (!email) {
+//       return res.status(400).json({ 
+//         success: false, 
+//         message: "Email is required" 
+//       });
+//     }
+
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(404).json({ 
+//         success: false, 
+//         message: "User not found" 
+//       });
+//     }
+
+//     if (user.role !== "faculty" || !user.isApproved || !user.isAccountVerified) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "User is not an approved or verified faculty member",
+//       });
+//     }
+
+//     if (event.coordinators.some(id => id.toString() === user._id.toString())) {
+//       return res.status(400).json({ 
+//         success: false, 
+//         message: "Coordinator already added" 
+//       });
+//     }
+
+//     event.coordinators.push(user._id);
+//     await event.save();
+//     await event.populate("coordinators", "name email role");
+
+//     res.status(200).json({
+//       success: true,
+//       message: `Coordinator ${user.name} added successfully`,
+//       coordinators: event.coordinators,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ 
+//       success: false, 
+//       message: error.message 
+//     });
+//   }
+// };
+
+
+
 export const addCoordinatorByEmail = async (req, res) => {
   try {
     const { email } = req.body;
@@ -1084,40 +1137,66 @@ export const addCoordinatorByEmail = async (req, res) => {
     if (!user) {
       return res.status(404).json({ 
         success: false, 
-        message: "User not found" 
+        message: "User not found with this email" 
       });
     }
 
-    if (user.role !== "faculty" || !user.isApproved || !user.isAccountVerified) {
+    // Check if user has faculty role
+    if (user.role !== "feculty") {
       return res.status(400).json({
         success: false,
-        message: "User is not an approved or verified faculty member",
+        message: `User with email ${email} is not a faculty member. Current role: ${user.role}`,
       });
     }
 
+    // Check if account is verified
+    if (!user.isAccountVerified) {
+      return res.status(400).json({
+        success: false,
+        message: `User account is not verified. Please ask them to verify their email first.`,
+      });
+    }
+
+    // Check if user is approved
+    if (!user.isApproved) {
+      return res.status(400).json({
+        success: false,
+        message: `User is not approved yet. Please approve them first from the admin panel.`,
+      });
+    }
+
+    // Check if already a coordinator
     if (event.coordinators.some(id => id.toString() === user._id.toString())) {
       return res.status(400).json({ 
         success: false, 
-        message: "Coordinator already added" 
+        message: `${user.name} is already a coordinator for this event` 
       });
     }
 
+    // Add coordinator
     event.coordinators.push(user._id);
     await event.save();
     await event.populate("coordinators", "name email role");
 
     res.status(200).json({
       success: true,
-      message: `Coordinator ${user.name} added successfully`,
+      message: `${user.name} added as coordinator successfully`,
       coordinators: event.coordinators,
     });
   } catch (error) {
+    console.error("Error in addCoordinatorByEmail:", error);
     res.status(500).json({ 
       success: false, 
       message: error.message 
     });
   }
 };
+
+
+
+
+
+
 
 // Remove coordinator from event (Organizers only)
 

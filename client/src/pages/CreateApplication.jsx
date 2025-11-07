@@ -1,9 +1,304 @@
-import { useState } from "react";
+// import { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { registrationEventSchema } from "@/lib/schemas";
+// import { useRegisterForEventMutation } from "@/state/api";
+// import { toast } from "sonner";
+
+// import {
+//   Form,
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+// import { useParams } from "react-router-dom";
+
+// export default function RegisterForEventForm() {
+// const { eventId } = useParams();
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [registerForEvent] = useRegisterForEventMutation();
+
+//   const form = useForm({
+//     resolver: zodResolver(registrationEventSchema),
+//     defaultValues: {
+//       college: "",
+//       department: "",
+//       studentId: "",
+//     },
+//   });
+
+//   const onSubmit = async (data) => {
+//     try {
+//       setIsSubmitting(true);
+
+//       const res = await registerForEvent({
+//         eventId,
+//         data,
+//       }).unwrap();
+
+//       toast.success("🎉 Registered successfully for the event!");
+//       form.reset();
+//     } catch (err) {
+//       console.error("Registration error:", err);
+//       toast.error(err?.data?.message || "Failed to register");
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow mt-40">
+//       <div className="text-center space-y-1">
+//         <h1 className="text-2xl font-bold">Event Registration</h1>
+//         <p className="text-gray-600">Fill out your details below</p>
+//       </div>
+
+//       <Form {...form}>
+//         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+//           {/* College */}
+//           <FormField
+//             control={form.control}
+//             name="college"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>College</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. ABC Engineering College" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* Department */}
+//           <FormField
+//             control={form.control}
+//             name="department"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Department</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. Computer Science" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* Student ID */}
+//           <FormField
+//             control={form.control}
+//             name="studentId"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Student ID</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. CSE1024" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           <Button type="submit" className="w-full" disabled={isSubmitting}>
+//             {isSubmitting ? "Registering..." : "Register"}
+//           </Button>
+//         </form>
+//       </Form>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+// import { useState } from "react";
+// import { useForm } from "react-hook-form";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { registrationEventSchema } from "@/lib/schemas";
+// import { useRegisterForEventMutation } from "@/state/api";
+// import { toast } from "sonner";
+
+// import {
+//   Form,
+//   FormControl,
+//   FormField,
+//   FormItem,
+//   FormLabel,
+//   FormMessage,
+// } from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+// import { useParams } from "react-router-dom";
+
+// export default function RegisterForEventForm() {
+//   const { eventId } = useParams();
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const [registerForEvent] = useRegisterForEventMutation();
+
+//   const form = useForm({
+//     resolver: zodResolver(registrationEventSchema),
+//     defaultValues: {
+//       role: "participant",
+//       college: "",
+//       department: "",
+//       studentId: "",
+//     },
+//   });
+
+//   const onSubmit = async (data) => {
+//     // Only allow participant registrations
+//     if (data.role !== "participant") {
+//       toast.error("Only participants can register through this form");
+//       return;
+//     }
+
+//     try {
+//       setIsSubmitting(true);
+
+//       const res = await registerForEvent({
+//         eventId,
+//         data,
+//       }).unwrap();
+
+//       toast.success("🎉 Registered successfully for the event!");
+//       form.reset();
+//     } catch (err) {
+//       console.error("Registration error:", err);
+//       toast.error(err?.data?.message || "Failed to register");
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
+
+//   return (
+//     <div className="max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow mt-40">
+//       <div className="text-center space-y-1">
+//         <h1 className="text-2xl font-bold">Event Registration</h1>
+//         <p className="text-gray-600">Fill out your details below</p>
+//       </div>
+
+//       <Form {...form}>
+//         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+//           {/* Role */}
+//           <FormField
+//             control={form.control}
+//             name="role"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Registration Type</FormLabel>
+//                 <Select 
+//                   onValueChange={field.onChange} 
+//                   defaultValue={field.value}
+//                   disabled
+//                 >
+//                   <FormControl>
+//                     <SelectTrigger>
+//                       <SelectValue placeholder="Select your role" />
+//                     </SelectTrigger>
+//                   </FormControl>
+//                   <SelectContent>
+//                     <SelectItem value="participant">Participant</SelectItem>
+//                   </SelectContent>
+//                 </Select>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* College */}
+//           <FormField
+//             control={form.control}
+//             name="college"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>College</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. ABC Engineering College" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* Department */}
+//           <FormField
+//             control={form.control}
+//             name="department"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Department</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. Computer Science" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           {/* Student ID */}
+//           <FormField
+//             control={form.control}
+//             name="studentId"
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Student ID</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="e.g. CSE1024" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+
+//           <Button type="submit" className="w-full" disabled={isSubmitting}>
+//             {isSubmitting ? "Registering..." : "Register as Participant"}
+//           </Button>
+//         </form>
+//       </Form>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationEventSchema } from "@/lib/schemas";
-import { useRegisterForEventMutation } from "@/state/api";
+import { useIsAuthQuery, useRegisterForEventMutation } from "@/state/api";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 import {
   Form,
@@ -15,12 +310,24 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
 
 export default function RegisterForEventForm() {
-const { eventId } = useParams();
+  const { eventId } = useParams();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registerForEvent] = useRegisterForEventMutation();
+  
+  // Get current user from Redux store
+  const {data: dataUser} = useIsAuthQuery()
+  // console.log(dataUser, "sjdhjsd");
+
+  const currentUser = dataUser?.user
+  // console.log(currentUser, "adgsjagdhgdhgjsdggdah");
+  
+  
 
   const form = useForm({
     resolver: zodResolver(registrationEventSchema),
@@ -31,7 +338,27 @@ const { eventId } = useParams();
     },
   });
 
+  // Check if user is a participant
+  useEffect(() => {
+    if (!currentUser) {
+      toast.error("Please login to register for events");
+      navigate("/login");
+      return;
+    }
+
+    if (currentUser.role !== "participant") {
+      toast.error("Only participants can register for events");
+      navigate(-1); // Go back to previous page
+    }
+  }, [currentUser, navigate]);
+
   const onSubmit = async (data) => {
+    // Double-check user role before submission
+    if (!currentUser || currentUser.role !== "participant") {
+      toast.error("Only participants can register for events");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
 
@@ -50,7 +377,21 @@ const { eventId } = useParams();
     }
   };
 
+  // Show nothing or loading state while checking user role
+  if (!currentUser || currentUser.role !== "participant") {
+    return (
+      <div className="max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow mt-40">
+        <Alert variant="destructive">
+          <AlertDescription>
+            Only participants can register for events. Redirecting...
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
+
   return (
+    <DashboardLayout>
     <div className="max-w-md mx-auto p-6 space-y-6 bg-white rounded-2xl shadow mt-40">
       <div className="text-center space-y-1">
         <h1 className="text-2xl font-bold">Event Registration</h1>
@@ -110,8 +451,18 @@ const { eventId } = useParams();
         </form>
       </Form>
     </div>
+    </DashboardLayout>
   );
 }
+
+
+
+
+
+
+
+
+
 
 
 

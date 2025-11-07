@@ -525,31 +525,167 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-// ✅ IMPORT CONTEXT
 import { useLayout } from './DashboardLayout';
 
-// ✅ IMPORT YOUR REAL HOOKS
 import { useIsAuthQuery, useLogoutMutation } from '@/state/api';
+
+import { useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+
+
   
   // ✅ Get sidebar state from Context
   const { sidebarOpen, setSidebarOpen, sidebarCollapsed, activeTab, setActiveTab } = useLayout();
+  // an error cause of active tab state -> Use useLocation() so the URL controls the highlight, not your old state.
   
   // ✅ Get auth data from YOUR hooks
   const { data: authData } = useIsAuthQuery();
+  const role = authData?.user?.role
   const [logout] = useLogoutMutation();
 
+  // const menuItems = [
+  //   { id: 'overview', icon: LayoutDashboard, label: 'Overview' },
+  //   { id: 'events', icon: CalendarPlus, label: 'Events' },
+  //   { id: 'registrations', icon: ClipboardList, label: 'Registrations' },
+  //   { id: 'attendance', icon: QrCode, label: 'Attendance' },
+  //   { id: 'feedback', icon: MessageSquare, label: 'Feedback' },
+  //   { id: 'reports', icon: FileText, label: 'Reports' },
+  //   { id: 'analytics', icon: BarChart3, label: 'Analytics' },
+  // ];
+
   const menuItems = [
-    { id: 'overview', icon: LayoutDashboard, label: 'Overview' },
-    { id: 'events', icon: CalendarPlus, label: 'Events' },
-    { id: 'registrations', icon: ClipboardList, label: 'Registrations' },
-    { id: 'attendance', icon: QrCode, label: 'Attendance' },
-    { id: 'feedback', icon: MessageSquare, label: 'Feedback' },
-    { id: 'reports', icon: FileText, label: 'Reports' },
-    { id: 'analytics', icon: BarChart3, label: 'Analytics' },
-  ];
+  // ✅ Visible to all roles
+  {
+    id: "dashboard",
+    icon: LayoutDashboard,
+    label: "Dashboard",
+    path: "/dashboard",
+    roles: ["admin", "organizer", "feculty", "volunteer", "participant"],
+  },
+  {
+    id: "events",
+    icon: CalendarPlus,
+    label: "All Events",
+    path: "/events/all",
+    roles: ["admin", "organizer", "feculty", "volunteer", "participant"],
+  },
+
+  // ✅ Admin-only
+  {
+    id: "manage-users",
+    icon: ClipboardList,
+    label: "Manage Users",
+    path: "/admin/manage-users",
+    roles: ["admin"],
+  },
+  {
+    id: "approve-role",
+    icon: MessageSquare,
+    label: "Approve Roles",
+    path: "/admin/approve-roles",
+    roles: ["admin"],
+  },
+
+  // ✅ Organizer + Feculty + Volunteer ///events/manage/by-team
+  {
+    id: "my-events",
+    icon: QrCode,
+    label: "My Events",
+    path: "/events/manage/my-events",
+    roles: ["organizer"],
+  },
+
+
+  {
+    id: "event-i-manage",
+    icon: QrCode,
+    label: "My Events",
+    path: "/events/manage/by-team",
+    roles: [ "feculty", "volunteer"],
+  },
+
+  // ✅ Participant-only
+  {
+    id: "registered-events",
+    icon: FileText,
+    label: "Events I Registered",
+    path: "/events/my-registrations",
+    roles: ["participant"],
+  },
+
+  {
+    id: "budget-overview",
+    icon: FileText,
+    label: "Budget Overview",
+    path: "/events/budget",
+    roles: ["organizer", "feculty", "volunteer"],
+  },
+
+  {
+    id: "registration-overview",
+    icon: FileText,
+    label: "Registration Overview",
+    path: "/events/registrations",
+    roles: ["organizer", "feculty", "volunteer"],
+  }, 
+
+  {
+    id: "attendance-scan",
+    icon: FileText,
+    label: "Attendance Scan",
+    path: "/events/attendance",
+    roles: ["organizer", "feculty", "volunteer"],
+  }, 
+
+  {
+    id: "attendance-overview",
+    icon: FileText,
+    label: "Attendance Overview",
+    path: "/attendance/view",
+    roles: ["organizer", "feculty", "volunteer"],
+  }, // AttendanceOverview
+
+  
+
+
+
+  // ✅ Common items for all roles (optional)
+  {
+    id: "feedback",
+    icon: MessageSquare,
+    label: "Feedback",
+    path: "/events/feedback",
+    roles: ["admin", "organizer", "feculty", "volunteer", "participant"],
+    // roles: ["admin", "organizer", "feculty", "volunteer", "participant"],
+  },
+  {
+    id: "reports",
+    icon: FileText,
+    label: "Reports",
+    path: "/reports",
+    roles: ["admin", "organizer", "feculty", "volunteer"],
+  },
+  {
+    id: "analytics",
+    icon: BarChart3,
+    label: "Analytics",
+    path: "/analytics",
+    roles: ["admin", "organizer"],
+  },
+];
+
+  // const isActive = location.pathname === item.path;
+
+
+const filteredMenu = menuItems.filter(item =>
+  item.roles.includes(role)
+);
+
+
 
   const getInitials = (name) => {
     if (!name) return 'U';
@@ -609,12 +745,15 @@ const Sidebar = () => {
 
         {/* Menu Items */}
         <ul className="space-y-1">
-          {menuItems.map((item) => (
+
+          {/* {filteredMenu.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => {
+                  
                   setActiveTab(item.id);
                   setSidebarOpen(false);
+                  navigate(item.path);
                 }}
                 className={`flex items-center w-full px-4 py-3 rounded-lg transition-colors duration-200 
                   ${sidebarCollapsed ? 'lg:justify-center' : ''}
@@ -631,7 +770,34 @@ const Sidebar = () => {
                 )}
               </button>
             </li>
-          ))}
+          ))} */}
+
+
+      {filteredMenu.map(item => {
+  const isActive = location.pathname === item.path;
+
+  return (
+    <li key={item.id}>
+      <button
+        onClick={() => {
+          navigate(item.path);
+          setSidebarOpen(false);
+        }}
+        className={`flex items-center w-full px-4 py-3 rounded-lg transition-colors duration-200 
+                  ${sidebarCollapsed ? 'lg:justify-center' : ''}
+                  ${
+            isActive
+              ? 'bg-blue-50 text-blue-600 border-l-4 border-blue-600'
+                    : 'text-gray-700 hover:bg-gray-50 border-l-4 border-transparent'
+          }`
+        }
+      >
+        <item.icon className={`w-5 h-5 shrink-0 ${sidebarCollapsed ? '' : 'mr-3'}`} />
+        {!sidebarCollapsed && <span className="font-medium text-sm">{item.label}</span>}
+      </button>
+    </li>
+  );
+})}
         </ul>
       </div>
 

@@ -288,11 +288,14 @@ import { toast } from "sonner";
 import { Plus, Trash2 } from "lucide-react";
 import { useCreateEventMutation } from "@/state/api";
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { eventSchema } from "@/lib/schemas";
+import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
+
 
 export default function CreateEventForm() {
+  const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [createEvent] = useCreateEventMutation();
 
@@ -346,7 +349,8 @@ const onSubmit = async (data) => {
     }
 
     const res = await createEvent(formData).unwrap();
-    toast.success("✅ Event created successfully!");
+    toast.success(" Event created successfully!");
+    navigate('/events/manage/my-events')
     form.reset();
   } catch (err) {
     console.error(err);
@@ -366,6 +370,8 @@ const onSubmit = async (data) => {
   };
 
   return (
+    <DashboardLayout>
+
     <div className="max-w-2xl mx-auto p-6 space-y-6 bg-white rounded-2xl shadow">
       <div className="text-center space-y-1">
         <h1 className="text-3xl font-bold">Create New Event</h1>
@@ -475,23 +481,6 @@ const onSubmit = async (data) => {
             )}
           />
 
-          {/* <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Event Banner</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => field.onChange(e.target.files[0])} // 👈 set the file in form
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
 
 
           <FormField
@@ -632,6 +621,8 @@ const onSubmit = async (data) => {
         </form>
       </Form>
     </div>
+    </DashboardLayout>
+    
   );
 }
 

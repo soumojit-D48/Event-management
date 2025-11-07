@@ -375,6 +375,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { useGetEventByIdQuery, useUpdateEventMutation } from "@/state/api";
 import { eventSchema } from "@/lib/schemas";
 import { useParams } from "react-router-dom";
+import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
 
 export default function UpdateEvent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -509,6 +510,7 @@ export default function UpdateEvent() {
   }
 
   return (
+    <DashboardLayout>
     <div className="max-w-2xl mx-auto p-6 space-y-6 bg-white rounded-2xl shadow">
       <div className="text-center space-y-1">
         <h1 className="text-3xl font-bold">Update Event</h1>
@@ -769,5 +771,6 @@ export default function UpdateEvent() {
         </form>
       </Form>
     </div>
+    </DashboardLayout>
   );
 }

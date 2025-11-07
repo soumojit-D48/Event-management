@@ -542,31 +542,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { useMarkAttendanceMutation } from '@/state/api';
 import { useParams } from 'react-router-dom';
+import DashboardLayout from '@/components/layoutComponents/DashboardLayout';
 
-// Mock API hook - Replace with your actual RTK Query hook
-// const useMarkAttendanceMutation = () => {
-//   const [isLoading, setIsLoading] = useState(false);
-  
-//   const markAttendance = async ({ eventId, registrationId }) => {
-//     setIsLoading(true);
-//     try {
-//       const response = await fetch(`/api/attendance/mark/${eventId}`, {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         credentials: 'include',
-//         body: JSON.stringify({ registrationId })
-//       });
-//       const data = await response.json();
-//       setIsLoading(false);
-//       return { data };
-//     } catch (error) {
-//       setIsLoading(false);
-//       throw error;
-//     }
-//   };
 
-//   return [markAttendance, { isLoading }];
-// };
 
 const AttendanceScanner = () => {
   const {eventId} = useParams();
@@ -688,146 +666,7 @@ const AttendanceScanner = () => {
 
 
 
-//     const onScanSuccess = async (decodedText) => {
-//   try {
-//     // 1. Parse QR code
-//     console.log('🔍 Raw QR Data:', decodedText);
-//     const qrData = JSON.parse(decodedText);
-//     console.log('📱 Parsed QR:', qrData);
-    
-//     // 2. Extract fields
-//     const { registrationId, eventId: qrEventId, participantName } = qrData;
-    
-//     // 3. Validate
-//     console.log('✅ Registration ID:', registrationId);
-//     console.log('✅ QR Event ID:', qrEventId);
-//     console.log('✅ Current Event ID:', eventId);
-    
-//     if (!registrationId) {
-//       console.error('❌ Missing registrationId in QR');
-//       setScanResult({
-//         success: false,
-//         message: "Invalid QR code: Missing registration ID"
-//       });
-//       setTimeout(() => {
-//         setScanResult(null);
-//         scanner.resume();
-//       }, 3000);
-//       return;
-//     }
 
-//     // 4. Check event match
-//     if (qrEventId && qrEventId !== eventId) {
-//       console.error('❌ Event mismatch:', { qrEventId, currentEventId: eventId });
-//       setScanResult({
-//         success: false,
-//         message: "This QR code is for a different event"
-//       });
-//       setTimeout(() => {
-//         setScanResult(null);
-//         scanner.resume();
-//       }, 3000);
-//       return;
-//     }
-
-//     // 5. Pause scanner
-//     scanner.pause(true);
-
-//     // 6. Show processing
-//     setScanResult({
-//       success: null,
-//       message: `Processing ${participantName || 'participant'}...`,
-//       isProcessing: true
-//     });
-
-//     // 7. Prepare API call
-//     const apiPayload = { eventId, registrationId };
-//     console.log('📤 Sending to API:', apiPayload);
-//     console.log('📍 API URL:', `/api/attendance/mark/${eventId}`);
-
-//     // 8. Call API with .unwrap()
-//     try {
-//       const result = await markAttendance(apiPayload).unwrap();
-//       console.log('✅ API Success:', result);
-
-//       // Success handling
-//       const participant = result.data.participant;
-//       setScanResult({
-//         success: true,
-//         message: result.message,
-//         participant: participant.name,
-//         email: participant.email,
-//         time: new Date().toLocaleTimeString(),
-//         alreadyCheckedIn: result.alreadyCheckedIn || false,
-//       });
-
-//       // Add to history
-//       setScanHistory(prev => [{
-//         id: registrationId,
-//         name: participant.name,
-//         time: new Date().toLocaleTimeString(),
-//         status: 'success'
-//       }, ...prev.slice(0, 9)]);
-
-//       // Play sound
-//       playSuccessSound();
-
-//       // Resume after 2 seconds
-//       setTimeout(() => {
-//         setScanResult(null);
-//         scanner.resume();
-//       }, 2000);
-
-//     } catch (apiError) {
-//       // API call failed
-//       console.error('❌ API Error:', apiError);
-//       console.error('❌ Error Status:', apiError.status);
-//       console.error('❌ Error Data:', apiError.data);
-//       console.error('❌ Error Original:', apiError.originalStatus);
-
-//       let errorMessage = "Server error";
-//       let alreadyCheckedIn = false;
-
-//       // Extract error details
-//       if (apiError.data) {
-//         errorMessage = apiError.data.message || errorMessage;
-//         alreadyCheckedIn = apiError.data.alreadyCheckedIn || false;
-        
-//         console.log('📋 Backend Message:', errorMessage);
-//         console.log('📋 Already Checked In?:', alreadyCheckedIn);
-//       } else if (apiError.error) {
-//         errorMessage = apiError.error;
-//       }
-
-//       setScanResult({
-//         success: false,
-//         message: errorMessage,
-//         alreadyCheckedIn: alreadyCheckedIn,
-//       });
-
-//       // Resume after 3 seconds
-//       setTimeout(() => {
-//         setScanResult(null);
-//         scanner.resume();
-//       }, 3000);
-//     }
-
-//   } catch (parseError) {
-//     // JSON parse error
-//     console.error('❌ QR Parse Error:', parseError);
-//     console.error('❌ Invalid QR Content:', decodedText);
-    
-//     setScanResult({
-//       success: false,
-//       message: "Invalid QR code format (not JSON)",
-//     });
-
-//     setTimeout(() => {
-//       setScanResult(null);
-//       scanner.resume();
-//     }, 3000);
-//   }
-// };
 
     const onScanError = (errorMessage) => {
       // Silent - normal scanning behavior
@@ -851,6 +690,7 @@ const AttendanceScanner = () => {
   };
 
   return (
+    <DashboardLayout>
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -1012,7 +852,151 @@ const AttendanceScanner = () => {
         </Card>
       </div>
     </div>
+    </DashboardLayout>
   );
 };
 
 export default AttendanceScanner;
+
+
+
+//     const onScanSuccess = async (decodedText) => {
+//   try {
+//     // 1. Parse QR code
+//     console.log('🔍 Raw QR Data:', decodedText);
+//     const qrData = JSON.parse(decodedText);
+//     console.log('📱 Parsed QR:', qrData);
+    
+//     // 2. Extract fields
+//     const { registrationId, eventId: qrEventId, participantName } = qrData;
+    
+//     // 3. Validate
+//     console.log('✅ Registration ID:', registrationId);
+//     console.log('✅ QR Event ID:', qrEventId);
+//     console.log('✅ Current Event ID:', eventId);
+    
+//     if (!registrationId) {
+//       console.error('❌ Missing registrationId in QR');
+//       setScanResult({
+//         success: false,
+//         message: "Invalid QR code: Missing registration ID"
+//       });
+//       setTimeout(() => {
+//         setScanResult(null);
+//         scanner.resume();
+//       }, 3000);
+//       return;
+//     }
+
+//     // 4. Check event match
+//     if (qrEventId && qrEventId !== eventId) {
+//       console.error('❌ Event mismatch:', { qrEventId, currentEventId: eventId });
+//       setScanResult({
+//         success: false,
+//         message: "This QR code is for a different event"
+//       });
+//       setTimeout(() => {
+//         setScanResult(null);
+//         scanner.resume();
+//       }, 3000);
+//       return;
+//     }
+
+//     // 5. Pause scanner
+//     scanner.pause(true);
+
+//     // 6. Show processing
+//     setScanResult({
+//       success: null,
+//       message: `Processing ${participantName || 'participant'}...`,
+//       isProcessing: true
+//     });
+
+//     // 7. Prepare API call
+//     const apiPayload = { eventId, registrationId };
+//     console.log('📤 Sending to API:', apiPayload);
+//     console.log('📍 API URL:', `/api/attendance/mark/${eventId}`);
+
+//     // 8. Call API with .unwrap()
+//     try {
+//       const result = await markAttendance(apiPayload).unwrap();
+//       console.log('✅ API Success:', result);
+
+//       // Success handling
+//       const participant = result.data.participant;
+//       setScanResult({
+//         success: true,
+//         message: result.message,
+//         participant: participant.name,
+//         email: participant.email,
+//         time: new Date().toLocaleTimeString(),
+//         alreadyCheckedIn: result.alreadyCheckedIn || false,
+//       });
+
+//       // Add to history
+//       setScanHistory(prev => [{
+//         id: registrationId,
+//         name: participant.name,
+//         time: new Date().toLocaleTimeString(),
+//         status: 'success'
+//       }, ...prev.slice(0, 9)]);
+
+//       // Play sound
+//       playSuccessSound();
+
+//       // Resume after 2 seconds
+//       setTimeout(() => {
+//         setScanResult(null);
+//         scanner.resume();
+//       }, 2000);
+
+//     } catch (apiError) {
+//       // API call failed
+//       console.error('❌ API Error:', apiError);
+//       console.error('❌ Error Status:', apiError.status);
+//       console.error('❌ Error Data:', apiError.data);
+//       console.error('❌ Error Original:', apiError.originalStatus);
+
+//       let errorMessage = "Server error";
+//       let alreadyCheckedIn = false;
+
+//       // Extract error details
+//       if (apiError.data) {
+//         errorMessage = apiError.data.message || errorMessage;
+//         alreadyCheckedIn = apiError.data.alreadyCheckedIn || false;
+        
+//         console.log('📋 Backend Message:', errorMessage);
+//         console.log('📋 Already Checked In?:', alreadyCheckedIn);
+//       } else if (apiError.error) {
+//         errorMessage = apiError.error;
+//       }
+
+//       setScanResult({
+//         success: false,
+//         message: errorMessage,
+//         alreadyCheckedIn: alreadyCheckedIn,
+//       });
+
+//       // Resume after 3 seconds
+//       setTimeout(() => {
+//         setScanResult(null);
+//         scanner.resume();
+//       }, 3000);
+//     }
+
+//   } catch (parseError) {
+//     // JSON parse error
+//     console.error('❌ QR Parse Error:', parseError);
+//     console.error('❌ Invalid QR Content:', decodedText);
+    
+//     setScanResult({
+//       success: false,
+//       message: "Invalid QR code format (not JSON)",
+//     });
+
+//     setTimeout(() => {
+//       setScanResult(null);
+//       scanner.resume();
+//     }, 3000);
+//   }
+// };

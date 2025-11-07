@@ -720,6 +720,375 @@
 
 
 
+
+
+
+
+
+
+
+// import { useState } from "react";
+// import { ArrowLeft, UserPlus, Trash2 } from "lucide-react";
+// import { Link, useParams, useNavigate } from "react-router-dom";
+// import { Button } from "@/components/ui/button";
+// import { Input } from "@/components/ui/input";
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+// import { Label } from "@/components/ui/label";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Alert, AlertDescription } from "@/components/ui/alert";
+// import { useGetEventByIdQuery, useAddOrganizerEmailMutation, useRemoveOrganizerMutation, useIsAuthQuery, useAddCoordinatorByEmailMutation, useRemoveCoordinatorMutation, useAddVolunteerByEmailMutation, useRemoveVolunteerMutation } from "@/state/api"; // Update path
+// import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
+
+// const ManageTeam = () => {
+//    const { id } = useParams();
+// //   const id = "68ec9e1f01c680cdde34f08b";
+  
+//   const [email, setEmail] = useState("");
+//   const [isDialogOpen, setIsDialogOpen] = useState(false);
+//   const [currentRole, setCurrentRole] = useState("coordinator");
+//   const [errorMessage, setErrorMessage] = useState("");
+
+//  const { data: authData, isLoading: authLoading } = useIsAuthQuery();
+
+
+
+//     const { data: eventData } = useGetEventByIdQuery(id);
+
+
+//   // Replace with mutations:
+  
+//   // const [addOrganizerEmail] = useAddOrganizerEmailMutation();
+//   // const [removeOrganizer] = useRemoveOrganizerMutation();
+
+
+//   const [addOrganizerEmail] = useAddOrganizerEmailMutation();
+//   const [removeOrganizer] = useRemoveOrganizerMutation();
+//   const [addCoordinatorByEmail] = useAddCoordinatorByEmailMutation();
+//   const [removeCoordinator] = useRemoveCoordinatorMutation();
+//   const [addVolunteerByEmail] = useAddVolunteerByEmailMutation();
+//   const [removeVolunteer] = useRemoveVolunteerMutation();
+
+//   const currentUser = authData?.user;
+//   const event = eventData?.event;
+
+//   // Check access permissions
+//   const canAccessPage = () => {
+//     if (!event || !currentUser) return false;
+
+//     const isOrganizer = event.createdBy?.some(org => org._id === currentUser.id);
+//     const isCoordinator = event.coordinators?.some(coord => coord._id === currentUser.id);
+//     const isVolunteer = event.volunteers?.some(vol => vol._id === currentUser.id);
+
+//     return isOrganizer || isCoordinator || isVolunteer;
+//   };
+
+//   // Check permissions for managing roles
+//   const canManageOrganizers = () => {
+//     return event?.createdBy?.some(org => org._id === currentUser?.id);
+//   };
+
+//   const canManageCoordinators = () => {
+//     const isOrganizer = event?.createdBy?.some(org => org._id === currentUser?.id);
+//     const isCoordinator = event?.coordinators?.some(coord => coord._id === currentUser?.id);
+//     return isOrganizer || isCoordinator;
+//   };
+
+//   const canManageVolunteers = () => {
+//     const isOrganizer = event?.createdBy?.some(org => org._id === currentUser?.id);
+//     const isCoordinator = event?.coordinators?.some(coord => coord._id === currentUser?.id);
+//     const isVolunteer = event?.volunteers?.some(vol => vol._id === currentUser?.id);
+//     return isOrganizer || isCoordinator || isVolunteer;
+//   };
+
+//   const handleAddMember = (role) => {
+//     setCurrentRole(role);
+//     setIsDialogOpen(true);
+//     setErrorMessage("");
+//   };
+
+//   const handleSubmitMember = async () => {
+//     if (!email.trim()) {
+//       setErrorMessage("Please enter an email address");
+//       return;
+//     }
+
+//     // Replace with mutation call:
+//     // if (currentRole === "organizer") {
+//     //   await addOrganizerEmail({ eventId: id, email });
+//     // }
+
+//     if (currentRole === "organizer") {
+//     await addOrganizerEmail({ eventId: id, email });
+//   } else if (currentRole === "coordinator") {
+//     await addCoordinatorByEmail({ eventId: id, email });
+//   } else if (currentRole === "volunteer") {
+//     await addVolunteerByEmail({ eventId: id, email });
+//   }
+
+
+//     console.log(`Adding ${currentRole}:`, email);
+//     setEmail("");
+//     setIsDialogOpen(false);
+//     setErrorMessage("");
+//   };
+
+//   const handleRemoveMember = async (memberId, role) => {
+//     // Replace with mutation call:
+//     // if (role === "organizer") {
+//     //   await removeOrganizer({ eventId: id, organizerId: memberId });
+//     // }
+
+//     if (role === "organizer") {
+//     await removeOrganizer({ eventId: id, organizerId: memberId });
+//   } else if (role === "coordinator") {
+//     await removeCoordinator({ eventId: id, coordinatorId: memberId });
+//   } else if (role === "volunteer") {
+//     await removeVolunteer({ eventId: id, volunteerId: memberId });
+//   }
+
+//     console.log(`Removing ${role}:`, memberId);
+//   };
+
+//   const getRoleBadgeStyle = (role) => {
+//     const styles = {
+//       organizer: "bg-purple-600 text-white",
+//       coordinator: "bg-blue-600 text-white",
+//       volunteer: "bg-green-600 text-white"
+//     };
+//     return styles[role] || "bg-gray-600 text-white";
+//   };
+
+//   const TeamMembersList = ({ members, role, canRemove }) => (
+//     <div className="space-y-3">
+//       {members && members.length > 0 ? (
+//         members.map((member) => (
+//           <div
+//             key={member._id}
+//             className="flex items-center justify-between p-4 rounded-lg border-2 border-gray-100 hover:border-purple-200 transition-colors bg-white"
+//           >
+//             <div className="flex items-center gap-3">
+//               <div className="h-10 w-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+//                 {member.name.charAt(0).toUpperCase()}
+//               </div>
+//               <div>
+//                 <p className="font-semibold text-gray-900">{member.name}</p>
+//                 <p className="text-sm text-gray-500">{member.email}</p>
+//               </div>
+//             </div>
+//             {canRemove && (
+//               <Button
+//                 variant="ghost"
+//                 size="icon"
+//                 onClick={() => handleRemoveMember(member._id, role)}
+//                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
+//               >
+//                 <Trash2 className="h-4 w-4" />
+//               </Button>
+//             )}
+//           </div>
+//         ))
+//       ) : (
+//         <div className="text-center py-8 text-gray-400">
+//           No {role}s added yet
+//         </div>
+//       )}
+//     </div>
+//   );
+
+//   if (authLoading && !canAccessPage()) {
+//     return (
+//       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center px-4">
+//         <Card className="border-2 border-red-200 max-w-md">
+//           <CardContent className="pt-6 text-center">
+//             <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
+//             <p className="text-gray-600">You don't have permission to manage this event's team</p>
+//           </CardContent>
+//         </Card>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <DashboardLayout>
+//     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+//       {/* Header */}
+//       <header className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-50">
+//         <div className="container mx-auto px-4 py-4">
+//           <div className="flex items-center gap-3">
+//             <Button
+//               variant="ghost"
+//               size="icon"
+//               onClick={() => window.history.back()}
+//               className="text-gray-700 hover:text-purple-600"
+//             >
+//               <ArrowLeft className="h-5 w-5" />
+//             </Button>
+//             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+//               Manage Event Team
+//             </h1>
+//           </div>
+//         </div>
+//       </header>
+
+//       <section className="container mx-auto px-4 py-12 max-w-5xl">
+//         <Card className="border-2 border-gray-100 shadow-xl ">
+//           <CardHeader className="bg-gradient-to-br from-purple-50 to-blue-50">
+//             <CardTitle className="text-2xl text-gray-900">{event?.title}</CardTitle>
+//             <p className="text-gray-600 text-sm mt-4">{event?.description}</p>
+//           </CardHeader>
+//           <CardContent className="pt-6">
+//             <Tabs defaultValue="organizers" className="w-full">
+//               <TabsList className="grid w-full grid-cols-3 mb-6">
+//                 <TabsTrigger value="organizers" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+//                   Organizers ({event?.createdBy?.length || 0})
+//                 </TabsTrigger>
+//                 <TabsTrigger value="coordinators" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+//                   Coordinators ({event?.coordinators?.length || 0})
+//                 </TabsTrigger>
+//                 <TabsTrigger value="volunteers" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
+//                   Volunteers ({event?.volunteers?.length || 0})
+//                 </TabsTrigger>
+//               </TabsList>
+
+//               {/* Organizers Tab */}
+//               <TabsContent value="organizers" className="space-y-4">
+//                 <div className="flex justify-between items-center mb-4">
+//                   <p className="text-gray-600">Organizers have full control over the event</p>
+//                   {canManageOrganizers() && (
+//                     <Button
+//                       onClick={() => handleAddMember("organizer")}
+//                       className="bg-purple-600 hover:bg-purple-700 text-white"
+//                     >
+//                       <UserPlus className="h-4 w-4 mr-2" />
+//                       Add Organizer
+//                     </Button>
+//                   )}
+//                 </div>
+//                 <TeamMembersList
+//                   members={event?.createdBy || []}
+//                   role="organizer"
+//                   canRemove={canManageOrganizers()}
+//                 />
+//               </TabsContent>
+
+//               {/* Coordinators Tab */}
+//               <TabsContent value="coordinators" className="space-y-4">
+//                 <div className="flex justify-between items-center mb-4">
+//                   <p className="text-gray-600">Coordinators help manage volunteers and sessions</p>
+//                   {canManageCoordinators() && (
+//                     <Button
+//                       onClick={() => handleAddMember("coordinator")}
+//                       className="bg-blue-600 hover:bg-blue-700 text-white"
+//                     >
+//                       <UserPlus className="h-4 w-4 mr-2" />
+//                       Add Coordinator
+//                     </Button>
+//                   )}
+//                 </div>
+//                 <TeamMembersList
+//                   members={event?.coordinators || []}
+//                   role="coordinator"
+//                   canRemove={canManageCoordinators()}
+//                 />
+//               </TabsContent>
+
+//               {/* Volunteers Tab */}
+//               <TabsContent value="volunteers" className="space-y-4">
+//                 <div className="flex justify-between items-center mb-4">
+//                   <p className="text-gray-600">Volunteers assist with event execution</p>
+//                   {canManageVolunteers() && (
+//                     <Button
+//                       onClick={() => handleAddMember("volunteer")}
+//                       className="bg-green-600 hover:bg-green-700 text-white"
+//                     >
+//                       <UserPlus className="h-4 w-4 mr-2" />
+//                       Add Volunteer
+//                     </Button>
+//                   )}
+//                 </div>
+//                 <TeamMembersList
+//                   members={event?.volunteers || []}
+//                   role="volunteer"
+//                   canRemove={canManageVolunteers()}
+//                 />
+//               </TabsContent>
+//             </Tabs>
+//           </CardContent>
+//         </Card>
+//       </section>
+
+//       {/* Add Member Dialog */}
+//       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+//         <DialogContent className="sm:max-w-md">
+//           <DialogHeader>
+//             <DialogTitle className="text-xl">
+//               Add {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}
+//             </DialogTitle>
+//             <DialogDescription>
+//               Enter the email address of the person you want to add as a {currentRole}
+//             </DialogDescription>
+//           </DialogHeader>
+//           <div className="space-y-4 py-4">
+//             <div className="space-y-2">
+//               <Label htmlFor="email">Email Address</Label>
+//               <Input
+//                 id="email"
+//                 type="email"
+//                 placeholder="user@college.edu"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 className="border-2 border-gray-200 focus:border-purple-400"
+//               />
+//               {errorMessage && (
+//                 <Alert className="bg-red-50 border-red-200">
+//                   <AlertDescription className="text-red-700">
+//                     {errorMessage}
+//                   </AlertDescription>
+//                 </Alert>
+//               )}
+//             </div>
+//           </div>
+//           <DialogFooter>
+//             <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+//               Cancel
+//             </Button>
+//             <Button
+//               onClick={handleSubmitMember}
+//               className={`${getRoleBadgeStyle(currentRole)}`}
+//             >
+//               <UserPlus className="h-4 w-4 mr-2" />
+//               Add Member
+//             </Button>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
+//     </div>
+//     </DashboardLayout>
+//   );
+// };
+
+// export default ManageTeam;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// COMPLETE FIXED VERSION - Replace your entire ManageTeam.jsx with this
+
 import { useState } from "react";
 import { ArrowLeft, UserPlus, Trash2 } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -730,35 +1099,25 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useGetEventByIdQuery, useAddOrganizerEmailMutation, useRemoveOrganizerMutation, useIsAuthQuery, useAddCoordinatorByEmailMutation, useRemoveCoordinatorMutation, useAddVolunteerByEmailMutation, useRemoveVolunteerMutation } from "@/state/api"; // Update path
+import { useGetEventByIdQuery, useAddOrganizerEmailMutation, useRemoveOrganizerMutation, useIsAuthQuery, useAddCoordinatorByEmailMutation, useRemoveCoordinatorMutation, useAddVolunteerByEmailMutation, useRemoveVolunteerMutation } from "@/state/api";
+import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
 
 const ManageTeam = () => {
-   const { id } = useParams();
-//   const id = "68ec9e1f01c680cdde34f08b";
+  const { id } = useParams();
   
   const [email, setEmail] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentRole, setCurrentRole] = useState("coordinator");
   const [errorMessage, setErrorMessage] = useState("");
 
- const { data: authData } = useIsAuthQuery();
+  const { data: authData, isLoading: authLoading } = useIsAuthQuery();
+  const { data: eventData, isLoading: eventLoading } = useGetEventByIdQuery(id);
 
-
-
-    const { data: eventData } = useGetEventByIdQuery(id);
-
-
-  // Replace with mutations:
-  
-  // const [addOrganizerEmail] = useAddOrganizerEmailMutation();
-  // const [removeOrganizer] = useRemoveOrganizerMutation();
-
-
-  const [addOrganizerEmail] = useAddOrganizerEmailMutation();
+  const [addOrganizerEmail, { isLoading: addingOrganizer }] = useAddOrganizerEmailMutation();
   const [removeOrganizer] = useRemoveOrganizerMutation();
-  const [addCoordinatorByEmail] = useAddCoordinatorByEmailMutation();
+  const [addCoordinatorByEmail, { isLoading: addingCoordinator }] = useAddCoordinatorByEmailMutation();
   const [removeCoordinator] = useRemoveCoordinatorMutation();
-  const [addVolunteerByEmail] = useAddVolunteerByEmailMutation();
+  const [addVolunteerByEmail, { isLoading: addingVolunteer }] = useAddVolunteerByEmailMutation();
   const [removeVolunteer] = useRemoveVolunteerMutation();
 
   const currentUser = authData?.user;
@@ -797,6 +1156,7 @@ const ManageTeam = () => {
     setCurrentRole(role);
     setIsDialogOpen(true);
     setErrorMessage("");
+    setEmail("");
   };
 
   const handleSubmitMember = async () => {
@@ -805,50 +1165,51 @@ const ManageTeam = () => {
       return;
     }
 
-    // Replace with mutation call:
-    // if (currentRole === "organizer") {
-    //   await addOrganizerEmail({ eventId: id, email });
-    // }
+    try {
+      let result;
+      
+      if (currentRole === "organizer") {
+        result = await addOrganizerEmail({ eventId: id, email }).unwrap();
+      } else if (currentRole === "coordinator") {
+        result = await addCoordinatorByEmail({ eventId: id, email }).unwrap();
+      } else if (currentRole === "volunteer") {
+        result = await addVolunteerByEmail({ eventId: id, email }).unwrap();
+      }
 
-    if (currentRole === "organizer") {
-    await addOrganizerEmail({ eventId: id, email });
-  } else if (currentRole === "coordinator") {
-    await addCoordinatorByEmail({ eventId: id, email });
-  } else if (currentRole === "volunteer") {
-    await addVolunteerByEmail({ eventId: id, email });
-  }
-
-
-    console.log(`Adding ${currentRole}:`, email);
-    setEmail("");
-    setIsDialogOpen(false);
-    setErrorMessage("");
+      console.log(`Successfully added ${currentRole}:`, result);
+      setEmail("");
+      setIsDialogOpen(false);
+      setErrorMessage("");
+    } catch (error) {
+      console.error("Error adding member:", error);
+      setErrorMessage(error?.data?.message || error?.message || "Failed to add member. Please try again.");
+    }
   };
 
   const handleRemoveMember = async (memberId, role) => {
-    // Replace with mutation call:
-    // if (role === "organizer") {
-    //   await removeOrganizer({ eventId: id, organizerId: memberId });
-    // }
+    try {
+      if (role === "organizer") {
+        await removeOrganizer({ eventId: id, organizerId: memberId }).unwrap();
+      } else if (role === "coordinator") {
+        await removeCoordinator({ eventId: id, coordinatorId: memberId }).unwrap();
+      } else if (role === "volunteer") {
+        await removeVolunteer({ eventId: id, volunteerId: memberId }).unwrap();
+      }
 
-    if (role === "organizer") {
-    await removeOrganizer({ eventId: id, organizerId: memberId });
-  } else if (role === "coordinator") {
-    await removeCoordinator({ eventId: id, coordinatorId: memberId });
-  } else if (role === "volunteer") {
-    await removeVolunteer({ eventId: id, volunteerId: memberId });
-  }
-
-    console.log(`Removing ${role}:`, memberId);
+      console.log(`Successfully removed ${role}:`, memberId);
+    } catch (error) {
+      console.error("Error removing member:", error);
+      alert(error?.data?.message || "Failed to remove member");
+    }
   };
 
   const getRoleBadgeStyle = (role) => {
     const styles = {
-      organizer: "bg-purple-600 text-white",
-      coordinator: "bg-blue-600 text-white",
-      volunteer: "bg-green-600 text-white"
+      organizer: "bg-purple-600 text-white hover:bg-purple-700",
+      coordinator: "bg-blue-600 text-white hover:bg-blue-700",
+      volunteer: "bg-green-600 text-white hover:bg-green-700"
     };
-    return styles[role] || "bg-gray-600 text-white";
+    return styles[role] || "bg-gray-600 text-white hover:bg-gray-700";
   };
 
   const TeamMembersList = ({ members, role, canRemove }) => (
@@ -888,173 +1249,192 @@ const ManageTeam = () => {
     </div>
   );
 
+  if (authLoading || eventLoading) {
+    return (
+      <DashboardLayout>
+        <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center px-4">
+          <Card className="border-2 border-purple-200 max-w-md">
+            <CardContent className="pt-6 text-center">
+              <p className="text-gray-600">Loading...</p>
+            </CardContent>
+          </Card>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   if (!canAccessPage()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center px-4">
-        <Card className="border-2 border-red-200 max-w-md">
-          <CardContent className="pt-6 text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-            <p className="text-gray-600">You don't have permission to manage this event's team</p>
-          </CardContent>
-        </Card>
-      </div>
+      <DashboardLayout>
+        <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center px-4">
+          <Card className="border-2 border-red-200 max-w-md">
+            <CardContent className="pt-6 text-center">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
+              <p className="text-gray-600">You don't have permission to manage this event's team</p>
+            </CardContent>
+          </Card>
+        </div>
+      </DashboardLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => window.history.back()}
-              className="text-gray-700 hover:text-purple-600"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              Manage Event Team
-            </h1>
-          </div>
-        </div>
-      </header>
-
-      <section className="container mx-auto px-4 py-12 max-w-5xl">
-        <Card className="border-2 border-gray-100 shadow-xl">
-          <CardHeader className="bg-gradient-to-br from-purple-50 to-blue-50">
-            <CardTitle className="text-2xl text-gray-900">{event?.title}</CardTitle>
-            <p className="text-gray-600 text-sm mt-2">{event?.description}</p>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <Tabs defaultValue="organizers" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="organizers" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
-                  Organizers ({event?.createdBy?.length || 0})
-                </TabsTrigger>
-                <TabsTrigger value="coordinators" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
-                  Coordinators ({event?.coordinators?.length || 0})
-                </TabsTrigger>
-                <TabsTrigger value="volunteers" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-                  Volunteers ({event?.volunteers?.length || 0})
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Organizers Tab */}
-              <TabsContent value="organizers" className="space-y-4">
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-600">Organizers have full control over the event</p>
-                  {canManageOrganizers() && (
-                    <Button
-                      onClick={() => handleAddMember("organizer")}
-                      className="bg-purple-600 hover:bg-purple-700 text-white"
-                    >
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Add Organizer
-                    </Button>
-                  )}
-                </div>
-                <TeamMembersList
-                  members={event?.createdBy || []}
-                  role="organizer"
-                  canRemove={canManageOrganizers()}
-                />
-              </TabsContent>
-
-              {/* Coordinators Tab */}
-              <TabsContent value="coordinators" className="space-y-4">
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-600">Coordinators help manage volunteers and sessions</p>
-                  {canManageCoordinators() && (
-                    <Button
-                      onClick={() => handleAddMember("coordinator")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Add Coordinator
-                    </Button>
-                  )}
-                </div>
-                <TeamMembersList
-                  members={event?.coordinators || []}
-                  role="coordinator"
-                  canRemove={canManageCoordinators()}
-                />
-              </TabsContent>
-
-              {/* Volunteers Tab */}
-              <TabsContent value="volunteers" className="space-y-4">
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-gray-600">Volunteers assist with event execution</p>
-                  {canManageVolunteers() && (
-                    <Button
-                      onClick={() => handleAddMember("volunteer")}
-                      className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Add Volunteer
-                    </Button>
-                  )}
-                </div>
-                <TeamMembersList
-                  members={event?.volunteers || []}
-                  role="volunteer"
-                  canRemove={canManageVolunteers()}
-                />
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Add Member Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-xl">
-              Add {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}
-            </DialogTitle>
-            <DialogDescription>
-              Enter the email address of the person you want to add as a {currentRole}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="user@college.edu"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border-2 border-gray-200 focus:border-purple-400"
-              />
-              {errorMessage && (
-                <Alert className="bg-red-50 border-red-200">
-                  <AlertDescription className="text-red-700">
-                    {errorMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
+    <DashboardLayout>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
+        {/* Header */}
+        <header className="bg-white/80 backdrop-blur-sm border-b border-purple-100 sticky top-0 z-50">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => window.history.back()}
+                className="text-gray-700 hover:text-purple-600"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                Manage Event Team
+              </h1>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSubmitMember}
-              className={`${getRoleBadgeStyle(currentRole)}`}
-            >
-              <UserPlus className="h-4 w-4 mr-2" />
-              Add Member
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </header>
+
+        <section className="container mx-auto px-4 py-12 max-w-5xl">
+          <Card className="border-2 border-gray-100 shadow-xl">
+            <CardHeader className="bg-gradient-to-br from-purple-50 to-blue-50">
+              <CardTitle className="text-2xl text-gray-900">{event?.title}</CardTitle>
+              <p className="text-gray-600 text-sm mt-4">{event?.description}</p>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <Tabs defaultValue="organizers" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 mb-6">
+                  <TabsTrigger value="organizers" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+                    Organizers ({event?.createdBy?.length || 0})
+                  </TabsTrigger>
+                  <TabsTrigger value="coordinators" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                    Coordinators ({event?.coordinators?.length || 0})
+                  </TabsTrigger>
+                  <TabsTrigger value="volunteers" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
+                    Volunteers ({event?.volunteers?.length || 0})
+                  </TabsTrigger>
+                </TabsList>
+
+                {/* Organizers Tab */}
+                <TabsContent value="organizers" className="space-y-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-gray-600">Organizers have full control over the event</p>
+                    {canManageOrganizers() && (
+                      <Button
+                        onClick={() => handleAddMember("organizer")}
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Add Organizer
+                      </Button>
+                    )}
+                  </div>
+                  <TeamMembersList
+                    members={event?.createdBy || []}
+                    role="organizer"
+                    canRemove={canManageOrganizers()}
+                  />
+                </TabsContent>
+
+                {/* Coordinators Tab */}
+                <TabsContent value="coordinators" className="space-y-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-gray-600">Coordinators help manage volunteers and sessions</p>
+                    {canManageCoordinators() && (
+                      <Button
+                        onClick={() => handleAddMember("coordinator")}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Add Coordinator
+                      </Button>
+                    )}
+                  </div>
+                  <TeamMembersList
+                    members={event?.coordinators || []}
+                    role="coordinator"
+                    canRemove={canManageCoordinators()}
+                  />
+                </TabsContent>
+
+                {/* Volunteers Tab */}
+                <TabsContent value="volunteers" className="space-y-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-gray-600">Volunteers assist with event execution</p>
+                    {canManageVolunteers() && (
+                      <Button
+                        onClick={() => handleAddMember("volunteer")}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Add Volunteer
+                      </Button>
+                    )}
+                  </div>
+                  <TeamMembersList
+                    members={event?.volunteers || []}
+                    role="volunteer"
+                    canRemove={canManageVolunteers()}
+                  />
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Add Member Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-xl">
+                Add {currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}
+              </DialogTitle>
+              <DialogDescription>
+                Enter the email address of the person you want to add as a {currentRole}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="user@college.edu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="border-2 border-gray-200 focus:border-purple-400"
+                />
+                {errorMessage && (
+                  <Alert className="bg-red-50 border-red-200">
+                    <AlertDescription className="text-red-700">
+                      {errorMessage}
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmitMember}
+                disabled={addingOrganizer || addingCoordinator || addingVolunteer}
+                className={`${getRoleBadgeStyle(currentRole)}`}
+              >
+                <UserPlus className="h-4 w-4 mr-2" />
+                {(addingOrganizer || addingCoordinator || addingVolunteer) ? "Adding..." : "Add Member"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </DashboardLayout>
   );
 };
 

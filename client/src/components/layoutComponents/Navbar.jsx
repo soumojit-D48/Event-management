@@ -468,20 +468,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-// ✅ IMPORT CONTEXT from DashboardLayout
 import { useLayout } from './DashboardLayout';
 
-// ✅ IMPORT YOUR REAL HOOKS (you already have these!)
 import { useIsAuthQuery, useLogoutMutation } from '../../state/api';
 
 const Navbar = () => {
   const navigate = useNavigate();
   
-  // ✅ Get sidebar state from Context
   const { sidebarOpen, setSidebarOpen, sidebarCollapsed, setSidebarCollapsed } = useLayout();
   
-  // ✅ Get auth data from YOUR hooks
-  const { data: authData } = useIsAuthQuery();
+  const { data: authData, refetch } = useIsAuthQuery();
   const [logout] = useLogoutMutation();
 
   const getInitials = (name) => {
@@ -491,7 +487,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout().unwrap();
+      await refetch()
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);

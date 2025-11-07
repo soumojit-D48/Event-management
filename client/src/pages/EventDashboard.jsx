@@ -1,4 +1,4 @@
-import { useGetAllEventsQuery } from '@/state/api'
+import { useGetAllEventsQuery, useIsAuthQuery } from '@/state/api'
 import { useState } from "react";
 import { Search, Calendar, MapPin, Users, Plus } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ const EventDashboard = () => {
     const navigate = useNavigate()
 
     const {data: eventData} = useGetAllEventsQuery()
+    const { data: authData } = useIsAuthQuery();
+    const userRole = authData?.user?.role;
 
     // console.log(eventData, "event");
    const events = eventData?.events || [];
@@ -62,6 +64,19 @@ const EventDashboard = () => {
             Join exciting events, workshops, and conferences happening on campus
           </p>
         </div>
+
+        {userRole === "organizer" && (
+  <div className="flex justify-center mb-6">
+    <button
+      onClick={() => navigate("/create-event")}
+      className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600
+                 hover:from-purple-700 hover:to-blue-700 text-white font-medium
+                 px-5 py-3 rounded-xl shadow-md transition-all duration-300"
+    >
+      <Plus className="h-5 w-5" /> Create Event
+    </button>
+  </div>
+)}
 
         {/* Search Bar */}
         <div className="max-w-2xl mx-auto mb-12">

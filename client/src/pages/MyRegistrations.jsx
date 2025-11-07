@@ -1,53 +1,9 @@
 import { useState } from 'react';
 import { Calendar, MapPin, Loader2, AlertCircle, Trash2, CheckCircle } from 'lucide-react';
 
-// Mock hooks - replace with your actual RTK Query hooks
-// const useGetMyRegistrationsQuery = () => {
-//   return {
-//     data: {
-//       success: true,
-//       count: 1,
-//       data: [
-//         {
-//           _id: "68ebaf2de716cf0f9084b893",
-//           event: {
-//             _id: "68eaa8c8abdf8d5af85e2209",
-//             title: "date time next update",
-//             description: "date time nextdate time next update",
-//             venue: "date time next update",
-//             startDate: "2025-10-15T14:28:00.000Z",
-//             endDate: "2025-10-17T14:28:00.000Z"
-//           },
-//           participant: {
-//             _id: "68ebae70e716cf0f9084b88a",
-//             name: "user99",
-//             email: "user99@gmail.com"
-//           },
-//           college: "ABC College of Engineering",
-//           department: "Computer Science",
-//           studentId: "34632436453",
-//           status: "registered",
-//           registeredAt: "2025-10-12T13:37:49.910Z",
-//           __v: 0
-//         }
-//       ]
-//     },
-//     isLoading: false,
-//     error: null,
-//   };
-// };
-
-// const useCancelRegistrationMutation = () => {
-//   return [
-//     async (id) => {
-//       console.log("Cancelling registration:", id);
-//       // Replace with actual mutation
-//     },
-//     { isLoading: false }
-//   ];
-// };
 
 import {useGetMyRegistrationsQuery, useCancelRegistrationMutation} from '../state/api'
+import DashboardLayout from '@/components/layoutComponents/DashboardLayout';
 
 export default function MyRegistrations() {
   const { data: responseData, isLoading, error } = useGetMyRegistrationsQuery();
@@ -138,6 +94,7 @@ export default function MyRegistrations() {
   }
 
   return (
+    <DashboardLayout>
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
@@ -238,5 +195,6 @@ export default function MyRegistrations() {
         )}
       </div>
     </div>
+    </DashboardLayout>
   );
 }

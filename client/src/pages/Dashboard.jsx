@@ -328,246 +328,26 @@
 
 
 // import { useState } from "react";
-import Navbar from "@/components/layoutComponents/Navbar";
-import Sidebar from "@/components/layoutComponents/Sidebar";
+
+
+
+
+
+
+
+
+
+
 import StatsGrid from "@/components/dashboard/StatsGrid";
 import UpcomingEvents from "@/components/dashboard/UpcomingEvents";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import QuickActions from "@/components/dashboard/QuickActions";
 import { Calendar, Users, TrendingUp, DollarSign, LayoutDashboard, CalendarPlus, ClipboardList, QrCode, MessageSquare, FileText, BarChart3 } from "lucide-react";
-// import { useIsAuthQuery, useLogoutMutation } from "@/state/api";
-
-// export default function Dashboard() {
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-//   const [activeTab, setActiveTab] = useState("overview");
-
-//   const menuItems = [
-//     { id: "overview", icon: LayoutDashboard, label: "Overview" },
-//     { id: "events", icon: CalendarPlus, label: "Events" },
-//     { id: "registrations", icon: ClipboardList, label: "Registrations" },
-//     { id: "attendance", icon: QrCode, label: "Attendance" },
-//     { id: "feedback", icon: MessageSquare, label: "Feedback" },
-//     { id: "reports", icon: FileText, label: "Reports" },
-//     { id: "analytics", icon: BarChart3, label: "Analytics" },
-//   ];
-
-//   const stats = [
-//     { label: "Total Events", value: "24", change: "+12%", icon: Calendar, color: "bg-blue-500" },
-//     { label: "Active Participants", value: "1,248", change: "+23%", icon: Users, color: "bg-green-500" },
-//     { label: "Budget Utilized", value: "₹2.4L", change: "68%", icon: DollarSign, color: "bg-purple-500" },
-//     { label: "Avg. Satisfaction", value: "4.6/5", change: "+0.3", icon: TrendingUp, color: "bg-orange-500" },
-//   ];
-
-//   const upcomingEvents = [
-//     { id: 1, title: "Tech Fest 2025", date: "Oct 15, 2025", status: "Upcoming", attendees: 450 },
-//     { id: 2, title: "AI Workshop", date: "Oct 18, 2025", status: "Registration Open", attendees: 120 },
-//     { id: 3, title: "Cultural Night", date: "Oct 22, 2025", status: "Planning", attendees: 0 },
-//   ];
-
-//   const recentActivity = [
-//     { action: "New registration for Tech Fest 2025", time: "2 mins ago", type: "registration" },
-//     { action: "Budget updated for AI Workshop", time: "1 hour ago", type: "budget" },
-//     { action: "Feedback received for Seminar", time: "3 hours ago", type: "feedback" },
-//     { action: "Certificate generated (125 students)", time: "5 hours ago", type: "certificate" },
-//   ];
-
-
-//   const {data: authData} = useIsAuthQuery()
-//   const [logout] = useLogoutMutation()
-
-//   console.log(authData?.user?.name, "user anme");
-
-
-  
-
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//       <Navbar 
-//       sidebarOpen={sidebarOpen}
-//         setSidebarOpen={setSidebarOpen}
-//         authData={authData?.user}
-//         logout={logout}
-//       />
-
-//       <Sidebar
-//         menuItems={menuItems}
-//         activeTab={activeTab}
-//         setActiveTab={setActiveTab}
-//         sidebarOpen={sidebarOpen}
-//         setSidebarOpen={setSidebarOpen}
-//         authData={authData?.user}
-//         logout={logout}
-//       />
-
-//       {sidebarOpen && (
-//         <div
-//           className="fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden"
-//           onClick={() => setSidebarOpen(false)}
-//         ></div>
-//       )}
-
-//       <main className="pt-16 lg:pl-64">
-//         <div className="p-4 sm:p-6 lg:p-8">
-//           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
-//           <p className="text-gray-600 mb-8">Welcome back! Here's what's happening today.</p>
-
-//           <StatsGrid stats={stats} />
-//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-//             <UpcomingEvents events={upcomingEvents} />
-//             <RecentActivity activities={recentActivity} />
-//           </div>
-//           <QuickActions />
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
-
 
 
 
 import { useState, useMemo } from "react";
 import { useIsAuthQuery, useLogoutMutation, useGetAllEventsQuery } from "@/state/api";
-// import Navbar from "@/components/Navbar";
-// import Sidebar from "@/components/Sidebar";
-// import StatsGrid from "@/components/StatsGrid";
-// import UpcomingEvents from "@/components/UpcomingEvents";
-// import RecentActivity from "@/components/RecentActivity";
-// import QuickActions from "@/components/QuickActions";
-// import { menuItems, stats, recentActivity } from "@/data";
-
-// export default function Dashboard() {
-
-//     const menuItems = [
-//     { id: "overview", icon: LayoutDashboard, label: "Overview" },
-//     { id: "events", icon: CalendarPlus, label: "Events" },
-//     { id: "registrations", icon: ClipboardList, label: "Registrations" },
-//     { id: "attendance", icon: QrCode, label: "Attendance" },
-//     { id: "feedback", icon: MessageSquare, label: "Feedback" },
-//     { id: "reports", icon: FileText, label: "Reports" },
-//     { id: "analytics", icon: BarChart3, label: "Analytics" },
-//   ];
-
-//   const stats = [
-//     { label: "Total Events", value: "24", change: "+12%", icon: Calendar, color: "bg-blue-500" },
-//     { label: "Active Participants", value: "1,248", change: "+23%", icon: Users, color: "bg-green-500" },
-//     { label: "Budget Utilized", value: "₹2.4L", change: "68%", icon: DollarSign, color: "bg-purple-500" },
-//     { label: "Avg. Satisfaction", value: "4.6/5", change: "+0.3", icon: TrendingUp, color: "bg-orange-500" },
-//   ];
-
-//   // const upcomingEvents = [
-//   //   { id: 1, title: "Tech Fest 2025", date: "Oct 15, 2025", status: "Upcoming", attendees: 450 },
-//   //   { id: 2, title: "AI Workshop", date: "Oct 18, 2025", status: "Registration Open", attendees: 120 },
-//   //   { id: 3, title: "Cultural Night", date: "Oct 22, 2025", status: "Planning", attendees: 0 },
-//   // ];
-
-//   const recentActivity = [
-//     { action: "New registration for Tech Fest 2025", time: "2 mins ago", type: "registration" },
-//     { action: "Budget updated for AI Workshop", time: "1 hour ago", type: "budget" },
-//     { action: "Feedback received for Seminar", time: "3 hours ago", type: "feedback" },
-//     { action: "Certificate generated (125 students)", time: "5 hours ago", type: "certificate" },
-//   ];
-
-
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-//   const [activeTab, setActiveTab] = useState("overview");
-
-//   const { data: authData } = useIsAuthQuery();
-//   const [logout] = useLogoutMutation();
-
-//   // ✅ Fetch all events
-//   const { data: allEvents, isLoading } = useGetAllEventsQuery();
-//   // console.log(allEvents, "all events");
-  
-
-//   // ✅ Compute statuses + pick only 3
-//   const events = useMemo(() => {
-//     if (!allEvents?.events) return [];
-
-//     const today = new Date();
-
-//     return allEvents.events
-//       .map((event) => {
-//         const start = new Date(event.startDate);
-//         const end = new Date(event.endDate);
-
-//         let status = "Ended";
-//         if (today < start) status = "Upcoming";
-//         else if (today >= start && today <= end) status = "Ongoing";
-
-//         return {
-//           id: event._id,
-//           title: event.title,
-//           venue: event.venue,
-//           startDate: event.startDate,
-//           sessionsCount: event.sessions?.length || 0,
-//           status,
-//         };
-//       })
-//        // show only 3
-//   }, [allEvents]);
-
-//   if (isLoading) return <div className="p-6 text-gray-600">Loading events...</div>;
-
-//   return (
-//     <div className="min-h-screen bg-gray-50">
-//       <Navbar
-//         sidebarOpen={sidebarOpen}
-//         setSidebarOpen={setSidebarOpen}
-//         authData={authData?.user}
-//         logout={logout}
-//       />
-
-//       <Sidebar
-//         menuItems={menuItems}
-//         activeTab={activeTab}
-//         setActiveTab={setActiveTab}
-//         sidebarOpen={sidebarOpen}
-//         setSidebarOpen={setSidebarOpen}
-//         authData={authData?.user}
-//         logout={logout}
-//       />
-
-//       {sidebarOpen && (
-//         <div
-//           className="fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden"
-//           onClick={() => setSidebarOpen(false)}
-//         ></div>
-//       )}
-
-//       <main className="pt-16 lg:pl-64">
-//         <div className="p-4 sm:p-6 lg:p-8">
-//           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-//             Dashboard Overview
-//           </h1>
-//           <p className="text-gray-600 mb-8">
-//             Welcome back! Here's what's happening today.
-//           </p>
-
-//           <StatsGrid stats={stats} />
-
-//           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-//             <UpcomingEvents events={events} />
-//             <RecentActivity activities={recentActivity} />
-//           </div>
-
-//           <QuickActions />
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
-
-
-
 import DashboardLayout from "@/components/layoutComponents/DashboardLayout";
 // import StatsGrid from "@/components/dashboard/StatsGrid";
 // import UpcomingEvents from "@/components/dashboard/UpcomingEvents";
@@ -591,6 +371,7 @@ export default function Dashboard() {
 
   // ✅ Fetch events data
   const { data: allEvents, isLoading } = useGetAllEventsQuery();
+ 
 
   // ✅ Compute event statuses
   const events = useMemo(() => {

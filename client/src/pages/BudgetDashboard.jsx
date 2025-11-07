@@ -218,6 +218,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, Plus, Trash2, Edit, DollarSign, TrendingUp, TrendingDown, PieChart } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
+import DashboardLayout from '@/components/layoutComponents/DashboardLayout';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
@@ -399,6 +400,7 @@ const BudgetDashboard = () => {
   };
 
   return (
+    <DashboardLayout>
     <div className="container mx-auto p-6 max-w-7xl">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
@@ -688,6 +690,7 @@ const BudgetDashboard = () => {
         </DialogContent>
       </Dialog>
     </div>
+    </DashboardLayout>
   );
 };
 

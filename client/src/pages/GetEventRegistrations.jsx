@@ -10,8 +10,7 @@
 // export default GetEventRegistrations
 
 
-import { useState, useMemo } from 'react';
-import { Download, Loader2, AlertCircle, Search } from 'lucide-react';
+
 
 // Simulating your RTK Query hook - replace with actual hook
 // const useGetEventRegistrationsQuery = (eventId) => {
@@ -22,6 +21,9 @@ import { Download, Loader2, AlertCircle, Search } from 'lucide-react';
 //   };
 // };
 
+
+import { useState, useMemo } from 'react';
+import { Download, Loader2, AlertCircle, Search } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { useGetEventRegistrationsQuery } from '@/state/api';
 
@@ -101,6 +103,7 @@ export default function EventRegistrations() {
 //     link.download = `event-registrations-${eventId}.csv`;
 //     link.click();
 //   };
+
 
 
 const { eventId } = useParams();

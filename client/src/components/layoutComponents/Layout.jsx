@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Search, Bell } from 'lucide-react';
+import { Calendar, Search, Bell, RefreshCcw } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import { useIsAuthQuery, useLogoutMutation } from '../../state/api';
 // ============ SIMPLE NAVBAR (No Sidebar Toggle) ============
 const SimpleNavbar = () => {
   const navigate = useNavigate();
-  const { data: authData } = useIsAuthQuery();
+  const { data: authData, refetch } = useIsAuthQuery();
   const [logout] = useLogoutMutation();
 
   const getInitials = (name) => {
@@ -27,7 +27,8 @@ const SimpleNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout().unwrap();
+      refetch()
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
