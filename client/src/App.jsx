@@ -388,7 +388,7 @@ function App() {
         <Route
           path="/manage-users"
           element={
-            <RoleBasedRoute allowedRoles={[ROLES.ORGANIZER, ROLES.ADMIN]}>
+            <RoleBasedRoute allowedRoles={[ROLES.ADMIN]}>
               <ManageUsers />
             </RoleBasedRoute>
           }

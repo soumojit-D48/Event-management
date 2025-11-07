@@ -488,7 +488,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logout().unwrap();
-      await refetch()
+      // await refetch()
       navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);

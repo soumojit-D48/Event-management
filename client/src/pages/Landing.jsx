@@ -328,6 +328,7 @@ import { motion } from 'framer-motion';
 import { Calendar, QrCode, BarChart3, Users, ArrowRight } from 'lucide-react';
 import Layout from '../components/layoutComponents/Layout'; // ✅ Import Layout
 import { useNavigate, Link } from 'react-router-dom';
+import Footer from '@/components/layoutComponents/Footer';
 
 export default function LandingPage() {
   const {navigate} = useNavigate();
@@ -527,6 +528,8 @@ export default function LandingPage() {
       </div>
       
       {/* ✅ Footer is handled by Layout component */}
+
+      <Footer/>
     </Layout>
   );
 }

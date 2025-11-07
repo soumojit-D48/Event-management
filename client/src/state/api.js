@@ -139,6 +139,15 @@ export const api = createApi({
         method: "POST",
       }),
       invalidatesTags: ["Auth", "Profile"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // This clears ALL cached data
+          dispatch(api.util.resetApiState());
+        } catch (err) {
+          console.error('Logout failed:', err);
+        }
+      },
     }),
 
     // Check authentication status
