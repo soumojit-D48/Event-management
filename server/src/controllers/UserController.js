@@ -1,7 +1,6 @@
 import User from '../models/User.js';
 // import transporter from '../config/nodemailer.js';
 
-import User from '../models/User.js';
 // Role request email template
 const ROLE_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
