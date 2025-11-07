@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 // import transporter from '../config/nodemailer.js';
 
+import User from '../models/User.js';
 // Role request email template
 const ROLE_REQUEST_TEMPLATE = `
 <!DOCTYPE html>
@@ -58,15 +59,15 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const { name, phone, department } = req.body;
-        
+
         const user = await User.findById(req.user._id);
-        
+
         if (name) user.name = name;
         if (phone) user.phone = phone;
         if (department) user.department = department;
-        
+
         await user.save();
-        
+
         const userData = {
             id: user._id,
             name: user.name,
@@ -76,10 +77,10 @@ const updateProfile = async (req, res) => {
             department: user.department
         };
 
-        res.status(200).json({ 
-            success: true, 
+        res.status(200).json({
+            success: true,
             message: 'Profile updated successfully',
-            user: userData 
+            user: userData
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -95,18 +96,18 @@ const requestRole = async (req, res) => {
         }
 
         const user = await User.findById(req.user._id);
-        
+
         if (user.role !== "participant") {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 success: false,
-                message: 'You already have a special role' 
+                message: 'You already have a special role'
             });
         }
 
         if (user.requestedRole && !user.isApproved) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 success: false,
-                message: 'You already have a pending role request' 
+                message: 'You already have a pending role request'
             });
         }
 
@@ -134,7 +135,7 @@ const requestRole = async (req, res) => {
             console.log('Email sending failed:', emailError);
         }
 
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
             message: 'Role request submitted successfully. Awaiting admin approval.',
             requestedRole: user.requestedRole,

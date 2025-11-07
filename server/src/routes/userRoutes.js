@@ -3,7 +3,7 @@ import {
     getProfile,
     updateProfile,
     requestRole
-} from '../controllers/userController.js';
+} from '../controllers/UserController.js'
 import userAuth from '../middlewares/userAuth.js';
 
 const router = express.Router();
