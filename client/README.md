@@ -1,16 +1,72 @@
-# React + Vite
+# Event Management System - Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend client for the Event Management System. It provides the user interface for interacting with the system.
 
-Currently, two official plugins are available:
+## Technologies Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React:** A JavaScript library for building user interfaces.
+- **Vite:** A fast build tool for modern web development.
+- **React Router:** For routing and navigation.
+- **Redux Toolkit:** For state management.
+- **Tailwind CSS:** A utility-first CSS framework.
+- **Radix UI:** For accessible UI components.
+- **React Hook Form:** For building forms.
+- **Chart.js:** For creating charts and graphs.
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js installed on your machine.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+1.  Clone the repository.
+2.  Navigate to the `client` directory:
+    ```bash
+    cd client
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+4.  Create a `.env` file in the `client` directory and add the following environment variable:
+    ```
+    VITE_API_URL=http://localhost:5000/api
+    ```
+
+### Running the Development Server
+
+To run the client in development mode:
+
+```bash
+npm run dev
+```
+
+The application will be running on `http://localhost:5173` (or another port if 5173 is in use).
+
+### Building for Production
+
+To create a production build of the application:
+
+```bash
+npm run build
+```
+
+The production-ready files will be in the `dist` directory.
+
+## Folder Structure
+
+```
+client/
+├── src/
+│   ├── assets/         # Static assets like images and SVGs
+│   ├── components/     # Reusable UI components
+│   ├── constants/      # Application constants
+│   ├── lib/            # Utility functions and schemas
+│   ├── pages/          # Application pages/routes
+│   ├── state/          # Redux store and API slices
+│   ├── App.jsx         # Main application component
+│   └── main.jsx        # Application entry point
+└── index.html          # Main HTML file
+```
