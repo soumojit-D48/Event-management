@@ -43,9 +43,9 @@ const SimpleNavbar = () => {
               onClick={() => navigate('/')}
               className="flex items-center cursor-pointer hover:opacity-80"
             >
-              <Calendar className="w-8 h-8 text-blue-600" />
+              <Calendar className="w-8 h-8 text-purple-600" />
               <span className="ml-2 text-xl font-bold text-gray-900 hidden sm:block">
-                Campus<span className="text-blue-600"> Sync</span>
+                Skill<span className="text-purple-600">Sync</span>
               </span>
             </div>
           </div>
@@ -133,7 +133,7 @@ const SimpleNavbar = () => {
                 </button>
                 <button
                   onClick={() => navigate('/signup')}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                 >
                   Get Started
                 </button>

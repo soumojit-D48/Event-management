@@ -10,10 +10,10 @@ const Footer = () => {
           {/* Column 1 - Brand */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">Campus Sync</span>
+              <span className="text-xl font-bold text-white">CampusSync</span>
             </div>
             <p className="text-sm">
               Transforming college event management through technology
@@ -71,7 +71,7 @@ const Footer = () => {
         
         {/* Bottom Copyright */}
         <div className="pt-8 border-t border-gray-700 text-center">
-          <p className="text-sm">© 2025 Campus Sync. All rights reserved.</p>
+          <p className="text-sm">© 2025 CampusSync. All rights reserved.</p>
         </div>
       </div>
     </footer>

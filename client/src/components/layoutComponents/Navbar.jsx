@@ -38,7 +38,7 @@
 //               </button>
 //               <div className="flex items-center ml-2 lg:ml-0">
 //                 <Calendar className="w-8 h-8 text-blue-600" />
-//                 <span className="ml-2 text-xl font-bold text-gray-900 hidden sm:block">EventHub</span>
+//                 <span className="ml-2 text-xl font-bold text-gray-900 hidden sm:block">CampusSync</span>
 //               </div>
 //             </div>
 
